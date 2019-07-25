@@ -2,7 +2,7 @@
 Project selector
 Select which project you want to open.
 
-self new openDialogWithSpec.
+ProjectSelector new open
 "
 Class {
 	#name : #ProjectSelector,
@@ -15,6 +15,19 @@ Class {
 	],
 	#category : #ProjectSelector
 }
+
+{ #category : #specs }
+ProjectSelector class >> defaultSpec [
+	^ SpecLayout composed
+		newColumn: [ :col | 
+			col
+				add: #project1;
+				add: #project2;
+				add: #project3 ]
+			origin: 0 @ 0
+			corner: 1 @ 0.7;
+		yourself
+]
 
 { #category : #'as yet unclassified' }
 ProjectSelector >> fetchProject: aBaseline from: aRepository [
@@ -54,9 +67,10 @@ ProjectSelector >> initializeWidgets [
 
 { #category : #api }
 ProjectSelector >> open [
-	^ self openDialogWithSpec
+	^ (self openDialogWithSpec
 		okAction: [ self accept ];
-		cancelAction: [ self cancel ];
+		cancelAction: [ self cancel ])
+		window modalRelativeTo: World;
 		yourself
 ]
 
