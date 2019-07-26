@@ -11,7 +11,8 @@ Class {
 		'projects',
 		'project1',
 		'project2',
-		'project3'
+		'project3',
+		'projectList'
 	],
 	#category : #ProjectSelector
 }
@@ -19,14 +20,23 @@ Class {
 { #category : #specs }
 ProjectSelector class >> defaultSpec [
 	^ SpecLayout composed
-		newColumn: [ :col | 
-			col
-				add: #project1;
-				add: #project2;
-				add: #project3 ]
-			origin: 0 @ 0
-			corner: 1 @ 0.7;
+		add: #projectList;
 		yourself
+]
+
+{ #category : #api }
+ProjectSelector >> accept [
+	^ self window close
+]
+
+{ #category : #api }
+ProjectSelector >> cancel [
+	^ self window close
+]
+
+{ #category : #api }
+ProjectSelector >> extent [
+	^ self width @ self height
 ]
 
 { #category : #'as yet unclassified' }
@@ -35,6 +45,11 @@ ProjectSelector >> fetchProject: aBaseline from: aRepository [
 		baseline: aBaseline;
 		repository: aRepository;
 		load
+]
+
+{ #category : #api }
+ProjectSelector >> height [
+	^ 200
 ]
 
 { #category : #initialization }
@@ -47,9 +62,6 @@ ProjectSelector >> initializePresenter [
 
 { #category : #initialization }
 ProjectSelector >> initializeWidgets [
-	"	projects := self newList.
-	projects displayBlock: [ :m | m selector ]."
-
 	project1 := self newCheckBox
 		label: 'Pharo startup Settings';
 		help: 'Automate pharo stuff on startup';
@@ -62,7 +74,14 @@ ProjectSelector >> initializeWidgets [
 		label: 'Glorp book';
 		help: 'introduction to glorp';
 		yourself.
-	self focusOrder add: project1; add: project2; add: project3.
+	projectList := (self instantiate: ListPresenter)
+		displayBlock: [ :x | x buildWithSpec ];
+		items: {project1 . project2 . project3};
+		yourself.
+	self focusOrder
+		add: project1;
+		add: project2;
+		add: project3
 ]
 
 { #category : #api }
@@ -70,7 +89,7 @@ ProjectSelector >> open [
 	^ (self openDialogWithSpec
 		okAction: [ self accept ];
 		cancelAction: [ self cancel ])
-		window modalRelativeTo: World;
+		window centered; modalRelativeTo: World; isResizeable: false
 		yourself
 ]
 
@@ -102,6 +121,16 @@ ProjectSelector >> project3 [
 { #category : #accessing }
 ProjectSelector >> project3: anObject [
 	project3 := anObject
+]
+
+{ #category : #accessing }
+ProjectSelector >> projectList [
+	^ projectList
+]
+
+{ #category : #accessing }
+ProjectSelector >> projectList: anObject [
+	projectList := anObject
 ]
 
 { #category : #accessing }
@@ -141,4 +170,9 @@ ProjectSelector >> setActionsForProject3 [
 { #category : #api }
 ProjectSelector >> title [
 	^ 'project selector'
+]
+
+{ #category : #api }
+ProjectSelector >> width [
+	^ 300
 ]
