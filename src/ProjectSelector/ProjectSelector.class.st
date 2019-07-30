@@ -16,11 +16,9 @@ Class {
 	#name : #ProjectSelector,
 	#superclass : #DynamicComposablePresenter,
 	#instVars : [
-		'project1',
-		'project2',
-		'project3',
 		'projectSelected',
-		'projectList'
+		'projectList',
+		'projects'
 	],
 	#category : #ProjectSelector
 }
@@ -48,7 +46,7 @@ ProjectSelector >> extent [
 	^ self width @ self height
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #fetching }
 ProjectSelector >> fetchProject: aBaseline from: aRepository [
 	Metacello new
 		baseline: aBaseline;
@@ -56,7 +54,7 @@ ProjectSelector >> fetchProject: aBaseline from: aRepository [
 		load
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #fetching }
 ProjectSelector >> getProject: aCollection [ 
 	self fetchProject: (aCollection at: #baseline) from: (aCollection at: #repository)
 ]
@@ -69,23 +67,21 @@ ProjectSelector >> height [
 { #category : #initialization }
 ProjectSelector >> initialize [
 	super initialize.
-	projectSelected  := OrderedCollection new.
+	projectSelected := OrderedCollection new.
 	^ self
 ]
 
 { #category : #initialization }
 ProjectSelector >> initializePresenter [
-
-	"
-	self setActionsForProject1.
-	self setActionsForProject2.
-	self setActionsForProject3.	"
+	projects
+		keysAndValuesDo: [ :key :project | 
+			project whenActivatedDo: [ self selectProject: key asSymbol ].
+			project whenDeactivatedDo: [ self unselectProject: key asSymbol ] ]
 ]
 
 { #category : #initialization }
 ProjectSelector >> initializeWidgets [
-	| projects |
-	projects := OrderedCollection new.
+	projects := Dictionary new.
 	self projectCollection
 		keysAndValuesDo: [ :key :value | 
 			| model detail |
@@ -94,13 +90,11 @@ ProjectSelector >> initializeWidgets [
 				label: (detail at: #name);
 				help: (detail at: #help);
 				yourself.
-			model whenActivatedDo: [ self selectProject: key asSymbol ].
-			model whenDeactivatedDo: [ self unselectProject: key asSymbol].
-			projects add: model.
-			self assign: model to: key asSymbol ].
+			projects at: key put: model.
+			"self assign: model to: key" ].
 	projectList := (self instantiate: ListPresenter)
 		displayBlock: [ :x | x buildWithSpec ];
-		items: projects;
+		items: projects values;
 		yourself
 ]
 
@@ -111,36 +105,6 @@ ProjectSelector >> open [
 		cancelAction: [ self cancel ])
 		window centered; modalRelativeTo: World; isResizeable: false
 		yourself
-]
-
-{ #category : #accessing }
-ProjectSelector >> project1 [
-	^ project1
-]
-
-{ #category : #accessing }
-ProjectSelector >> project1: anObject [
-	project1 := anObject
-]
-
-{ #category : #accessing }
-ProjectSelector >> project2 [
-	^ project2
-]
-
-{ #category : #accessing }
-ProjectSelector >> project2: anObject [
-	project2 := anObject
-]
-
-{ #category : #accessing }
-ProjectSelector >> project3 [
-	^ project3
-]
-
-{ #category : #accessing }
-ProjectSelector >> project3: anObject [
-	project3 := anObject
 ]
 
 { #category : #initialization }
@@ -191,30 +155,6 @@ ProjectSelector >> projectSelected: anObject [
 ProjectSelector >> selectProject: aProject [
  projectSelected add: aProject.
 
-
-]
-
-{ #category : #initialization }
-ProjectSelector >> setActionsForProject1 [
-
-	project1 whenActivatedDo: [ self selectProject: #project1 ].
-	project1 whenDeactivatedDo: [ self unselectProject:  #project1 ]
-
-]
-
-{ #category : #initialization }
-ProjectSelector >> setActionsForProject2 [
-
-	project2 whenActivatedDo: [ self selectProject:  #project2 ].
-	project2 whenDeactivatedDo: [ self unselectProject:  #project2 ]
-
-]
-
-{ #category : #initialization }
-ProjectSelector >> setActionsForProject3 [
-
-	project3 whenActivatedDo: [ self selectProject: #project3 ].
-	project3 whenDeactivatedDo: [ self unselectProject:  #project3 ]
 
 ]
 
