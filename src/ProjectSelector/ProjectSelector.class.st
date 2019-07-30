@@ -14,7 +14,7 @@ self assert: ((pb projectSelected  indexOf: #project2) = 1 ).
 "
 Class {
 	#name : #ProjectSelector,
-	#superclass : #ComposablePresenter,
+	#superclass : #DynamicComposablePresenter,
 	#instVars : [
 		'project1',
 		'project2',
@@ -76,33 +76,32 @@ ProjectSelector >> initialize [
 { #category : #initialization }
 ProjectSelector >> initializePresenter [
 
+	"
 	self setActionsForProject1.
 	self setActionsForProject2.
-	self setActionsForProject3.	
+	self setActionsForProject3.	"
 ]
 
 { #category : #initialization }
 ProjectSelector >> initializeWidgets [
-	project1 := self newCheckBox
-		label: 'Pharo startup Settings';
-		help: 'Automate pharo stuff on startup';
-		yourself.
-	project2 := self newCheckBox
-		label: 'Argentum';
-		help: 'financial and interest calculation made easy';
-		yourself.
-	project3 := self newCheckBox
-		label: 'Glorp book';
-		help: 'introduction to glorp';
-		yourself.
+	| projects |
+	projects := OrderedCollection new.
+	self projectCollection
+		keysAndValuesDo: [ :key :value | 
+			| model detail |
+			detail := value asDictionary.
+			model := self newCheckBox
+				label: (detail at: #name);
+				help: (detail at: #help);
+				yourself.
+			model whenActivatedDo: [ self selectProject: key asSymbol ].
+			model whenDeactivatedDo: [ self unselectProject: key asSymbol].
+			projects add: model.
+			self assign: model to: key asSymbol ].
 	projectList := (self instantiate: ListPresenter)
 		displayBlock: [ :x | x buildWithSpec ];
-		items: {project1 . project2 . project3};
-		yourself.
-	self focusOrder
-		add: project1;
-		add: project2;
-		add: project3
+		items: projects;
+		yourself
 ]
 
 { #category : #api }
@@ -149,17 +148,20 @@ ProjectSelector >> projectCollection [
 	^ {(#project1
 		->
 			{(#name -> 'Pharo startup Settings').
+			(#help -> 'Automate pharo stuff on startup').
 			(#baseline -> 'PharoStartupSettings').
 			(#repository
 				-> 'github://rvillemeur/PharoStartupSettings/repository')}).
 	(#project2
 		->
 			{(#name -> 'Argentum').
+			(#help -> 'financial and interest calculation made easy').
 			(#baseline -> 'Argentum').
 			(#repository -> 'github://rvillemeur/argentum/repository')}).
 	(#project3
 		->
 			{(#name -> 'Glorp book').
+			(#help -> 'introduction to glorp').
 			(#baseline -> 'GlorpBook').
 			(#repository -> 'github://rvillemeur/glorpbook/repository')})}
 		asDictionary
