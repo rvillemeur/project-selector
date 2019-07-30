@@ -3,15 +3,23 @@ Project selector
 Select which project you want to open.
 
 ProjectSelector new open
+
+Testing the UI can be done with the following script: 
+| pb |
+pb := ProjectSelector new.
+pb buildWithSpec .
+(pb projectList listItems at:2) toggleState.
+self assert: ((pb projectSelected  indexOf: #project2) = 1 ).
+
 "
 Class {
 	#name : #ProjectSelector,
 	#superclass : #ComposablePresenter,
 	#instVars : [
-		'projects',
 		'project1',
 		'project2',
 		'project3',
+		'projectSelected',
 		'projectList'
 	],
 	#category : #ProjectSelector
@@ -26,7 +34,8 @@ ProjectSelector class >> defaultSpec [
 
 { #category : #api }
 ProjectSelector >> accept [
-	^ self window close
+self projectSelected do: [ :project | self getProject: (self projectCollection at: project) asDictionary ].
+^ self window close
 ]
 
 { #category : #api }
@@ -47,9 +56,21 @@ ProjectSelector >> fetchProject: aBaseline from: aRepository [
 		load
 ]
 
+{ #category : #'as yet unclassified' }
+ProjectSelector >> getProject: aCollection [ 
+	self fetchProject: (aCollection at: #baseline) from: (aCollection at: #repository)
+]
+
 { #category : #api }
 ProjectSelector >> height [
 	^ 200
+]
+
+{ #category : #initialization }
+ProjectSelector >> initialize [
+	super initialize.
+	projectSelected  := OrderedCollection new.
+	^ self
 ]
 
 { #category : #initialization }
@@ -123,6 +144,27 @@ ProjectSelector >> project3: anObject [
 	project3 := anObject
 ]
 
+{ #category : #initialization }
+ProjectSelector >> projectCollection [
+	^ {(#project1
+		->
+			{(#name -> 'Pharo startup Settings').
+			(#baseline -> 'PharoStartupSettings').
+			(#repository
+				-> 'github://rvillemeur/PharoStartupSettings/repository')}).
+	(#project2
+		->
+			{(#name -> 'Argentum').
+			(#baseline -> 'Argentum').
+			(#repository -> 'github://rvillemeur/argentum/repository')}).
+	(#project3
+		->
+			{(#name -> 'Glorp book').
+			(#baseline -> 'GlorpBook').
+			(#repository -> 'github://rvillemeur/glorpbook/repository')})}
+		asDictionary
+]
+
 { #category : #accessing }
 ProjectSelector >> projectList [
 	^ projectList
@@ -134,42 +176,54 @@ ProjectSelector >> projectList: anObject [
 ]
 
 { #category : #accessing }
-ProjectSelector >> projects [
-	^ projects
+ProjectSelector >> projectSelected [
+	^ projectSelected
 ]
 
 { #category : #accessing }
-ProjectSelector >> projects: anObject [
-	projects := anObject
+ProjectSelector >> projectSelected: anObject [
+	projectSelected := anObject
+]
+
+{ #category : #initialization }
+ProjectSelector >> selectProject: aProject [
+ projectSelected add: aProject.
+
+
 ]
 
 { #category : #initialization }
 ProjectSelector >> setActionsForProject1 [
 
-	project1 whenActivatedDo: [ projects add: {'toto'} ].
-	project1 whenDeactivatedDo: [ projects remove: {'toto'} ]
+	project1 whenActivatedDo: [ self selectProject: #project1 ].
+	project1 whenDeactivatedDo: [ self unselectProject:  #project1 ]
 
 ]
 
 { #category : #initialization }
 ProjectSelector >> setActionsForProject2 [
 
-	project2 whenActivatedDo: [ projects add: {'toto'} ].
-	project2 whenDeactivatedDo: [ projects remove: {'toto'} ]
+	project2 whenActivatedDo: [ self selectProject:  #project2 ].
+	project2 whenDeactivatedDo: [ self unselectProject:  #project2 ]
 
 ]
 
 { #category : #initialization }
 ProjectSelector >> setActionsForProject3 [
 
-	project3 whenActivatedDo: [ projects add: {'toto'} ].
-	project3 whenDeactivatedDo: [ projects remove: {'toto'} ]
+	project3 whenActivatedDo: [ self selectProject: #project3 ].
+	project3 whenDeactivatedDo: [ self unselectProject:  #project3 ]
 
 ]
 
 { #category : #api }
 ProjectSelector >> title [
 	^ 'project selector'
+]
+
+{ #category : #initialization }
+ProjectSelector >> unselectProject: aProject [
+	projectSelected remove: aProject
 ]
 
 { #category : #api }
