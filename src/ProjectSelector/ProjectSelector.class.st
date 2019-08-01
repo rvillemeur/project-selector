@@ -2,7 +2,7 @@
 Project selector
 Select which project you want to open.
 
-ProjectSelector new open
+ProjectSelector open
 
 Testing the UI can be done with the following script: 
 | pb |
@@ -10,6 +10,15 @@ pb := ProjectSelector new.
 pb buildWithSpec .
 (pb projectList listItems at:2) toggleState.
 self assert: ((pb projectSelected  indexOf: #project2) = 1 ).
+
+Note, if we want to use the power of dynamic declaration of variable, here are the steps:
+- In initializeWidget, we register dynamic components with 'self assign: model to: key'
+In our case, key looks like #project1 for example
+We can then iterate on our dynamic variable like this:
+|projects|
+projects := OrderedCollection new.
+(1 to: 3 do: [ :count | projects add: (self perform: (('project' , count asString) asSymbol)) ]) 
+projects then get the list of 3 projects declared dynamically .
 
 "
 Class {
@@ -30,9 +39,38 @@ ProjectSelector class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #specs }
+ProjectSelector class >> open [
+	^ self new open
+]
+
+{ #category : #initialization }
+ProjectSelector class >> projectCollection [
+	^ {(#project1
+		->
+			{(#name -> 'Pharo startup Settings').
+			(#help -> 'Automate pharo stuff on startup').
+			(#baseline -> 'PharoStartupSettings').
+			(#repository
+				-> 'github://rvillemeur/PharoStartupSettings/repository')}).
+	(#project2
+		->
+			{(#name -> 'Argentum').
+			(#help -> 'financial and interest calculation made easy').
+			(#baseline -> 'Argentum').
+			(#repository -> 'github://rvillemeur/argentum/repository')}).
+	(#project3
+		->
+			{(#name -> 'Glorp book').
+			(#help -> 'introduction to glorp').
+			(#baseline -> 'GlorpBook').
+			(#repository -> 'github://rvillemeur/glorpbook/repository')})}
+		asDictionary
+]
+
 { #category : #api }
 ProjectSelector >> accept [
-self projectSelected do: [ :project | self getProject: (self projectCollection at: project) asDictionary ].
+self projectSelected do: [ :project | self getProject: (ProjectSelector projectCollection at: project) asDictionary ].
 ^ self window close
 ]
 
@@ -75,14 +113,14 @@ ProjectSelector >> initialize [
 ProjectSelector >> initializePresenter [
 	projects
 		keysAndValuesDo: [ :key :project | 
-			project whenActivatedDo: [ self selectProject: key asSymbol ].
-			project whenDeactivatedDo: [ self unselectProject: key asSymbol ] ]
+			project whenActivatedDo: [ self selectProject: key ].
+			project whenDeactivatedDo: [ self unselectProject: key ] ]
 ]
 
 { #category : #initialization }
 ProjectSelector >> initializeWidgets [
 	projects := Dictionary new.
-	self projectCollection
+	ProjectSelector projectCollection
 		keysAndValuesDo: [ :key :value | 
 			| model detail |
 			detail := value asDictionary.
@@ -90,8 +128,7 @@ ProjectSelector >> initializeWidgets [
 				label: (detail at: #name);
 				help: (detail at: #help);
 				yourself.
-			projects at: key put: model.
-			"self assign: model to: key" ].
+			projects at: key put: model ].
 	projectList := (self instantiate: ListPresenter)
 		displayBlock: [ :x | x buildWithSpec ];
 		items: projects values;
@@ -105,30 +142,6 @@ ProjectSelector >> open [
 		cancelAction: [ self cancel ])
 		window centered; modalRelativeTo: World; isResizeable: false
 		yourself
-]
-
-{ #category : #initialization }
-ProjectSelector >> projectCollection [
-	^ {(#project1
-		->
-			{(#name -> 'Pharo startup Settings').
-			(#help -> 'Automate pharo stuff on startup').
-			(#baseline -> 'PharoStartupSettings').
-			(#repository
-				-> 'github://rvillemeur/PharoStartupSettings/repository')}).
-	(#project2
-		->
-			{(#name -> 'Argentum').
-			(#help -> 'financial and interest calculation made easy').
-			(#baseline -> 'Argentum').
-			(#repository -> 'github://rvillemeur/argentum/repository')}).
-	(#project3
-		->
-			{(#name -> 'Glorp book').
-			(#help -> 'introduction to glorp').
-			(#baseline -> 'GlorpBook').
-			(#repository -> 'github://rvillemeur/glorpbook/repository')})}
-		asDictionary
 ]
 
 { #category : #accessing }
@@ -153,9 +166,7 @@ ProjectSelector >> projectSelected: anObject [
 
 { #category : #initialization }
 ProjectSelector >> selectProject: aProject [
- projectSelected add: aProject.
-
-
+	projectSelected add: aProject
 ]
 
 { #category : #api }
