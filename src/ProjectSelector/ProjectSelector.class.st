@@ -65,13 +65,18 @@ ProjectSelector class >> projectCollection [
 			(#help -> 'introduction to glorp').
 			(#baseline -> 'GlorpBook').
 			(#repository -> 'github://rvillemeur/glorpbook/repository')}).
-				(#project4
+	(#project4
+		->
+			{(#name -> 'sourdough').
+			(#help -> 'sourdough').
+			(#baseline -> 'Sourdough').
+			(#repository -> 'github://rvillemeur/sourdough/src')}).
+	(#project5
 		->
 			{(#name -> 'Small Clock').
 			(#help -> 'an animated clock using morphic').
 			(#baseline -> 'SmallClock').
-			(#repository -> 'github://rvillemeur/smallclock/src')})
-			}
+			(#repository -> 'github://rvillemeur/smallclock/src')})}
 		asDictionary
 ]
 
