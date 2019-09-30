@@ -76,7 +76,13 @@ ProjectSelector class >> projectCollection [
 			{(#name -> 'Small Clock').
 			(#help -> 'an animated clock using morphic').
 			(#baseline -> 'SmallClock').
-			(#repository -> 'github://rvillemeur/smallclock/src')})}
+			(#repository -> 'github://rvillemeur/smallclock/src')}).
+	(#project6
+		->
+			{(#name -> 'Game of Life').
+			(#help -> 'a simple game of life implementation with Morphic').
+			(#baseline -> 'SmallGameOfLife').
+			(#repository -> 'github://rvillemeur/SmallGameOfLife/src')})}
 		asDictionary
 ]
 
