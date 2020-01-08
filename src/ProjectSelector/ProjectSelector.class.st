@@ -23,7 +23,7 @@ projects then get the list of 3 projects declared dynamically .
 "
 Class {
 	#name : #ProjectSelector,
-	#superclass : #DynamicComposablePresenter,
+	#superclass : #SpDynamicPresenter,
 	#instVars : [
 		'projectSelected',
 		'projectList',
@@ -34,13 +34,14 @@ Class {
 
 { #category : #specs }
 ProjectSelector class >> defaultSpec [
-	^ SpecLayout composed
+	^ SpBoxLayout newVertical 
 		add: #projectList;
 		yourself
 ]
 
 { #category : #specs }
 ProjectSelector class >> open [
+<example>
 	^ self new open
 ]
 
@@ -88,7 +89,7 @@ ProjectSelector class >> projectCollection [
 
 { #category : #api }
 ProjectSelector >> accept [
-self projectSelected do: [ :project | self getProject: (ProjectSelector projectCollection at: project) asDictionary ].
+self projectSelected do: [ :project | self getProject: (self class projectCollection at: project) asDictionary ].
 ^ self window close
 ]
 
@@ -128,7 +129,7 @@ ProjectSelector >> initialize [
 ]
 
 { #category : #initialization }
-ProjectSelector >> initializePresenter [
+ProjectSelector >> initializePresenters [
 	projects
 		keysAndValuesDo: [ :key :project | 
 			project whenActivatedDo: [ self selectProject: key ].
@@ -138,7 +139,7 @@ ProjectSelector >> initializePresenter [
 { #category : #initialization }
 ProjectSelector >> initializeWidgets [
 	projects := Dictionary new.
-	ProjectSelector projectCollection
+	self class projectCollection
 		keysAndValuesDo: [ :key :value | 
 			| model detail |
 			detail := value asDictionary.
@@ -147,18 +148,25 @@ ProjectSelector >> initializeWidgets [
 				help: (detail at: #help);
 				yourself.
 			projects at: key put: model ].
-	projectList := (self instantiate: ListPresenter)
-		displayBlock: [ :x | x buildWithSpec ];
+	projectList := (self instantiate: SpListPresenter)
+		display: [ :x | x buildWithSpec ];
 		items: projects values;
 		yourself
+]
+
+{ #category : #initialization }
+ProjectSelector >> initializeWindow: aWindowPresenter [
+	aWindowPresenter
+		title: self title;
+		initialExtent: self width @ self height
 ]
 
 { #category : #api }
 ProjectSelector >> open [
 	^ (self openDialogWithSpec
 		okAction: [ self accept ];
-		cancelAction: [ self cancel ])
-		window centered; modalRelativeTo: World; isResizeable: false
+		cancelAction: [ self cancel ]; centered)
+		window  isResizeable: false
 		yourself
 ]
 
