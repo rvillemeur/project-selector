@@ -27,7 +27,9 @@ Class {
 	#instVars : [
 		'projectSelected',
 		'projectList',
-		'projects'
+		'projects',
+		'okButton',
+		'cancelButton'
 	],
 	#category : #ProjectSelector
 }
@@ -35,14 +37,18 @@ Class {
 { #category : #specs }
 ProjectSelector class >> defaultSpec [
 	^ SpBoxLayout newVertical 
-		add: #projectList;
+		add: #projectList withConstraints: [ :constraints | constraints padding: 5; expand: true; fill: true];
+		addLast: (SpBoxLayout newHorizontal
+				add: #okButton withConstraints: [ :constraints | constraints padding: 20; expand: true; fill: true];
+				add: #cancelButton withConstraints: [ :constraints | constraints padding: 20; expand: true; fill: true];
+				yourself) expand: false;
 		yourself
 ]
 
 { #category : #specs }
 ProjectSelector class >> open [
 <example>
-	^ self new open
+	^ self new openModalWithSpec
 ]
 
 { #category : #initialization }
@@ -138,6 +144,12 @@ ProjectSelector >> initializePresenters [
 
 { #category : #initialization }
 ProjectSelector >> initializeWidgets [
+	okButton := self newButton
+		label: 'Ok';
+		action: [ self accept ].
+	cancelButton := self newButton
+		label: 'Cancel';
+		action: [ self cancel ].
 	projects := Dictionary new.
 	self class projectCollection
 		keysAndValuesDo: [ :key :value | 
@@ -158,16 +170,9 @@ ProjectSelector >> initializeWidgets [
 ProjectSelector >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self title;
-		initialExtent: self width @ self height
-]
-
-{ #category : #api }
-ProjectSelector >> open [
-	^ (self openDialogWithSpec
-		okAction: [ self accept ];
-		cancelAction: [ self cancel ]; centered)
-		window  isResizeable: false
-		yourself
+		initialExtent: self width @ self height;
+		isResizeable: false;
+		aboutText: 'Simple project selection located on github, by Renaud de Villemeur'
 ]
 
 { #category : #accessing }
