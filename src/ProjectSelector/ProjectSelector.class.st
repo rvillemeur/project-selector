@@ -167,6 +167,12 @@ ProjectSelector >> initializeWidgets [
 		yourself
 ]
 
+{ #category : #'instance creation' }
+ProjectSelector >> open [
+	<script: 'self new openModalWithSpec'>
+	
+]
+
 { #category : #accessing }
 ProjectSelector >> projectList [
 	^ projectList
