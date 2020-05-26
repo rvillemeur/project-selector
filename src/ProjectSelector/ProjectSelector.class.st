@@ -85,7 +85,13 @@ ProjectSelector class >> projectCollection [
 			{(#name -> 'Game of Life').
 			(#help -> 'a simple game of life implementation with Morphic').
 			(#baseline -> 'SmallGameOfLife').
-			(#repository -> 'github://rvillemeur/SmallGameOfLife/src')})}
+			(#repository -> 'github://rvillemeur/SmallGameOfLife/src')}).
+	(#project7
+		->
+			{(#name -> 'Athens Sketch').
+			(#help -> 'A collection a Athens sketch drawing sample').
+			(#baseline -> 'AthensSketch').
+			(#repository -> 'github://rvillemeur/AthensSketch/src')}).}
 		asDictionary
 ]
 
