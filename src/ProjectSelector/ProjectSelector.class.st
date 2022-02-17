@@ -34,8 +34,8 @@ Class {
 	#category : #ProjectSelector
 }
 
-{ #category : #specs }
-ProjectSelector class >> defaultSpec [
+{ #category : #layout }
+ProjectSelector class >> defaultLayout [
 	^ SpBoxLayout newVertical 
 		add: #projectList withConstraints: [ :constraints | constraints padding: 5; expand: true; fill: true];
 		yourself
@@ -43,8 +43,9 @@ ProjectSelector class >> defaultSpec [
 
 { #category : #specs }
 ProjectSelector class >> open [
-<example>
-	^ self new openModalWithSpec
+
+	<example>
+	^ self new openModal
 ]
 
 { #category : #initialization }
@@ -157,25 +158,25 @@ ProjectSelector >> initializePresenters [
 
 { #category : #initialization }
 ProjectSelector >> initializeWidgets [
+
 	projects := Dictionary new.
-	self class projectCollection
-		keysAndValuesDo: [ :key :value | 
-			| model detail |
-			detail := value asDictionary.
-			model := self newCheckBox
-				label: (detail at: #name);
-				help: (detail at: #help);
-				yourself.
-			projects at: key put: model ].
+	self class projectCollection keysAndValuesDo: [ :key :value | 
+		| model detail |
+		detail := value asDictionary.
+		model := self newCheckBox
+			         label: (detail at: #name);
+			         help: (detail at: #help);
+			         yourself.
+		projects at: key put: model ].
 	projectList := (self instantiate: SpListPresenter)
-		display: [ :x | x buildWithSpec ];
-		items: projects values;
-		yourself
+		               display: [ :x | x build ];
+		               items: projects values;
+		               yourself
 ]
 
 { #category : #'instance creation' }
 ProjectSelector >> open [
-	<script: 'self new openModalWithSpec'>
+	<script: 'self new openModal'>
 	
 ]
 
