@@ -50,50 +50,50 @@ ProjectSelector class >> open [
 
 { #category : #initialization }
 ProjectSelector class >> projectCollection [
-	^ {(#project1
-		->
-			{(#name -> 'Pharo startup Settings').
-			(#help -> 'Automate pharo stuff on startup').
-			(#baseline -> 'PharoStartupSettings').
-			(#repository
-				-> 'github://rvillemeur/PharoStartupSettings/repository')}).
-	(#project2
-		->
-			{(#name -> 'Argentum').
-			(#help -> 'financial and interest calculation made easy').
-			(#baseline -> 'Argentum').
-			(#repository -> 'github://rvillemeur/argentum/repository')}).
-	(#project3
-		->
-			{(#name -> 'Glorp book').
-			(#help -> 'introduction to glorp').
-			(#baseline -> 'GlorpBook').
-			(#repository -> 'github://rvillemeur/glorpbook/repository')}).
-	(#project4
-		->
-			{(#name -> 'sourdough').
-			(#help -> 'sourdough').
-			(#baseline -> 'Sourdough').
-			(#repository -> 'github://rvillemeur/sourdough/src')}).
-	(#project5
-		->
-			{(#name -> 'Small Clock').
-			(#help -> 'an animated clock using morphic').
-			(#baseline -> 'SmallClock').
-			(#repository -> 'github://rvillemeur/smallclock/src')}).
-	(#project6
-		->
-			{(#name -> 'Game of Life').
-			(#help -> 'a simple game of life implementation with Morphic').
-			(#baseline -> 'SmallGameOfLife').
-			(#repository -> 'github://rvillemeur/SmallGameOfLife/src')}).
-	(#project7
-		->
-			{(#name -> 'Athens Sketch').
-			(#help -> 'A collection a Athens sketch drawing sample').
-			(#baseline -> 'AthensSketch').
-			(#repository -> 'github://rvillemeur/AthensSketch/src')}).}
-		asDictionary
+
+	^ {
+		  (#project1 -> {
+			   (#name -> 'Pharo startup Settings').
+			   (#help -> 'Automate pharo stuff on startup').
+			   (#baseline -> 'PharoStartupSettings').
+			   (#repository
+			    -> 'github://rvillemeur/PharoStartupSettings/repository') }).
+		  (#project2 -> {
+			   (#name -> 'Argentum').
+			   (#help -> 'financial and interest calculation made easy').
+			   (#baseline -> 'Argentum').
+			   (#repository -> 'github://rvillemeur/argentum/repository') }).
+		  (#project3 -> {
+			   (#name -> 'Glorp book').
+			   (#help -> 'introduction to glorp').
+			   (#baseline -> 'GlorpBook').
+			   (#repository -> 'github://rvillemeur/glorpbook/repository') }).
+		  (#project4 -> {
+			   (#name -> 'sourdough').
+			   (#help -> 'sourdough').
+			   (#baseline -> 'Sourdough').
+			   (#repository -> 'github://rvillemeur/sourdough/src') }).
+		  (#project5 -> {
+			   (#name -> 'Small Clock').
+			   (#help -> 'an animated clock using morphic').
+			   (#baseline -> 'SmallClock').
+			   (#repository -> 'github://rvillemeur/smallclock/src') }).
+		  (#project6 -> {
+			   (#name -> 'Game of Life').
+			   (#help -> 'a simple game of life implementation with Morphic').
+			   (#baseline -> 'SmallGameOfLife').
+			   (#repository -> 'github://rvillemeur/SmallGameOfLife/src') }).
+		  (#project7 -> {
+			   (#name -> 'Athens Sketch').
+			   (#help -> 'A collection a Athens sketch drawing sample').
+			   (#baseline -> 'AthensSketch').
+			   (#repository -> 'github://rvillemeur/AthensSketch/src') }).
+		  (#project8 -> {
+			   (#name -> 'Booklet graphics').
+			   (#help -> 'Code used to illustrate booklet graphics').
+			   (#baseline -> 'BookletGraphics').
+			   (#repository -> 'github://rvillemeur/Booklet-Graphics-Code/src') }) }
+		  asDictionary
 ]
 
 { #category : #api }
