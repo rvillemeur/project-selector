@@ -92,7 +92,7 @@ ProjectSelector class >> projectCollection [
 			   (#name -> 'Booklet graphics').
 			   (#help -> 'Code used to illustrate booklet graphics').
 			   (#baseline -> 'BookletGraphics').
-			   (#repository -> 'github://rvillemeur/Booklet-Graphics-Code/src') }) }
+			   (#repository -> 'github://rvillemeur/Booklet-Graphics-Code:main/src') }) }
 		  asDictionary
 ]
 
