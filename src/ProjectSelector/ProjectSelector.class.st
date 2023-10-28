@@ -88,7 +88,12 @@ ProjectSelector class >> projectCollection [
 			   (#help -> 'A collection a Athens sketch drawing sample').
 			   (#baseline -> 'AthensSketch').
 			   (#repository -> 'github://rvillemeur/AthensSketch/src') }).
-		  (#project8 -> {
+		(#project8 -> {
+			   (#name -> 'QrCode').
+			   (#help -> 'QRCode Generation').
+			   (#baseline -> 'QRCode').
+			   (#repository -> 'github://rvillemeur/QRCode/src') }).
+		  (#project9 -> {
 			   (#name -> 'Booklet graphics').
 			   (#help -> 'Code used to illustrate booklet graphics').
 			   (#baseline -> 'BookletGraphics').
