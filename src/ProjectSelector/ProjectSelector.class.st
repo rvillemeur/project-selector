@@ -36,9 +36,14 @@ Class {
 
 { #category : #layout }
 ProjectSelector class >> defaultLayout [
-	^ SpBoxLayout newVertical 
-		add: #projectList withConstraints: [ :constraints | constraints padding: 5; expand: true; fill: true];
-		yourself
+
+	^ SpBoxLayout newVertical
+		  add: #projectList withConstraints: [ :constraints |
+			  constraints
+				  padding: 5;
+				  expand: true;
+				  fill: true ];
+		  yourself
 ]
 
 { #category : #specs }
@@ -97,14 +102,22 @@ ProjectSelector class >> projectCollection [
 			   (#name -> 'Booklet graphics').
 			   (#help -> 'Code used to illustrate booklet graphics').
 			   (#baseline -> 'BookletGraphics').
-			   (#repository -> 'github://rvillemeur/Booklet-Graphics-Code:main/src') }) }
+			   (#repository -> 'github://rvillemeur/Booklet-Graphics-Code:main/src') }).
+			(#project10 -> {
+			   (#name -> 'Seaside books code').
+			   (#help -> 'Code used in seaside books').
+			   (#baseline -> 'SeaBook').
+			   (#repository -> 'github://rvillemeur/seabook:main/src') }) }
 		  asDictionary
 ]
 
 { #category : #api }
 ProjectSelector >> accept [
-self projectSelected do: [ :project | self getProject: (self class projectCollection at: project) asDictionary ].
-^ self window close
+
+	self projectSelected do: [ :project |
+		self getProject:
+			(self class projectCollection at: project) asDictionary ].
+	^ self window close
 ]
 
 { #category : #api }
@@ -144,6 +157,7 @@ ProjectSelector >> initialize [
 
 { #category : #initialization }
 ProjectSelector >> initializeDialogWindow: aDialog [
+
 	super initializeDialogWindow: aDialog.
 	aDialog
 		title: self title;
