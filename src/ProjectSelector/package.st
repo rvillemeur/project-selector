@@ -1,1 +1,1 @@
-Package { #name : #ProjectSelector }
+Package { #name : 'ProjectSelector' }

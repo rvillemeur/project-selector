@@ -22,8 +22,8 @@ projects then get the list of 3 projects declared dynamically .
 
 "
 Class {
-	#name : #ProjectSelector,
-	#superclass : #SpPresenter,
+	#name : 'ProjectSelector',
+	#superclass : 'SpPresenter',
 	#instVars : [
 		'projectSelected',
 		'projectList',
@@ -31,10 +31,11 @@ Class {
 		'okButton',
 		'cancelButton'
 	],
-	#category : #ProjectSelector
+	#category : 'ProjectSelector',
+	#package : 'ProjectSelector'
 }
 
-{ #category : #layout }
+{ #category : 'layout' }
 ProjectSelector class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
@@ -46,14 +47,14 @@ ProjectSelector class >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 ProjectSelector class >> open [
 
 	<example>
 	^ self new openModal
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 ProjectSelector class >> projectCollection [
 
 	^ {
@@ -107,11 +108,16 @@ ProjectSelector class >> projectCollection [
 			   (#name -> 'Seaside books code').
 			   (#help -> 'Code used in seaside books').
 			   (#baseline -> 'SeaBook').
-			   (#repository -> 'github://rvillemeur/seabook:main/src') }) }
+			   (#repository -> 'github://rvillemeur/seabook:main/src') }).
+						(#project11 -> {
+			   (#name -> 'Vector canvas').
+			   (#help -> 'Vector canvas from Cuis').
+			   (#baseline -> 'VectorGraphics').
+			   (#repository -> 'github://rvillemeur/VectorGraphics:main/src') })  }
 		  asDictionary
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 ProjectSelector >> accept [
 
 	self projectSelected do: [ :project |
@@ -120,17 +126,17 @@ ProjectSelector >> accept [
 	^ self window close
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 ProjectSelector >> cancel [
 	^ self window close
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 ProjectSelector >> extent [
 	^ self width @ self height
 ]
 
-{ #category : #fetching }
+{ #category : 'fetching' }
 ProjectSelector >> fetchProject: aBaseline from: aRepository [
 	Metacello new
 		baseline: aBaseline;
@@ -138,24 +144,24 @@ ProjectSelector >> fetchProject: aBaseline from: aRepository [
 		load
 ]
 
-{ #category : #fetching }
+{ #category : 'fetching' }
 ProjectSelector >> getProject: aCollection [ 
 	self fetchProject: (aCollection at: #baseline) from: (aCollection at: #repository)
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 ProjectSelector >> height [
 	^ 200
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 ProjectSelector >> initialize [
 	super initialize.
 	projectSelected := OrderedCollection new.
 	^ self
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 ProjectSelector >> initializeDialogWindow: aDialog [
 
 	super initializeDialogWindow: aDialog.
@@ -167,7 +173,7 @@ ProjectSelector >> initializeDialogWindow: aDialog [
 		cancelAction: [ :presenter | self cancel ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 ProjectSelector >> initializePresenters [
 	projects
 		keysAndValuesDo: [ :key :project | 
@@ -175,7 +181,7 @@ ProjectSelector >> initializePresenters [
 			project whenDeactivatedDo: [ self unselectProject: key ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 ProjectSelector >> initializeWidgets [
 
 	projects := Dictionary new.
@@ -193,48 +199,48 @@ ProjectSelector >> initializeWidgets [
 		               yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 ProjectSelector >> open [
 	<script: 'self new openModal'>
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ProjectSelector >> projectList [
 	^ projectList
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ProjectSelector >> projectList: anObject [
 	projectList := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ProjectSelector >> projectSelected [
 	^ projectSelected
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ProjectSelector >> projectSelected: anObject [
 	projectSelected := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 ProjectSelector >> selectProject: aProject [
 	projectSelected add: aProject
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 ProjectSelector >> title [
 	^ 'project selector'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 ProjectSelector >> unselectProject: aProject [
 	projectSelected remove: aProject
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 ProjectSelector >> width [
 	^ 300
 ]
