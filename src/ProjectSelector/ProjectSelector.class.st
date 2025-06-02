@@ -109,11 +109,17 @@ ProjectSelector class >> projectCollection [
 			   (#help -> 'Code used in seaside books').
 			   (#baseline -> 'SeaBook').
 			   (#repository -> 'github://rvillemeur/seabook:main/src') }).
-						(#project11 -> {
+			(#project11 -> {
 			   (#name -> 'Vector canvas').
 			   (#help -> 'Vector canvas from Cuis').
 			   (#baseline -> 'VectorGraphics').
-			   (#repository -> 'github://rvillemeur/VectorGraphics:main/src') })  }
+			   (#repository -> 'github://rvillemeur/VectorGraphics:main/src') }).
+			(#project12 -> {
+			   (#name -> 'Breakout').
+			   (#help -> 'Breakout game').
+			   (#baseline -> 'BlBreakOut').
+			   (#repository -> 'github://rvillemeur/BlBreakOut:main/src') })
+			 }
 		  asDictionary
 ]
 
