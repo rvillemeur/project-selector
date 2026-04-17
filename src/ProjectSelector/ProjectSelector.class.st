@@ -118,7 +118,12 @@ ProjectSelector class >> projectCollection [
 			   (#name -> 'Breakout').
 			   (#help -> 'Breakout game').
 			   (#baseline -> 'BlBreakOut').
-			   (#repository -> 'github://rvillemeur/BlBreakOut:main/src') })
+			   (#repository -> 'github://rvillemeur/BlBreakOut:main/src') }).
+			(#project13 -> {
+			   (#name -> 'Voronoi').
+			   (#help -> 'Voronoi Diagram').
+			   (#baseline -> 'Voronoi').
+			   (#repository -> 'github://rvillemeur/VoronoiDiagram:main/src') })
 			 }
 		  asDictionary
 ]
