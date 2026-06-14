@@ -123,7 +123,12 @@ ProjectSelector class >> projectCollection [
 			   (#name -> 'Voronoi').
 			   (#help -> 'Voronoi Diagram').
 			   (#baseline -> 'Voronoi').
-			   (#repository -> 'github://rvillemeur/VoronoiDiagram:main/src') })
+			   (#repository -> 'github://rvillemeur/VoronoiDiagram:main/src') }).
+			(#project14 -> {
+			   (#name -> 'MCP server').
+			   (#help -> 'MCP server').
+			   (#baseline -> 'PharoMCP').
+			   (#repository -> 'github://rvillemeur/PharoMCP:main/src') })
 			 }
 		  asDictionary
 ]
